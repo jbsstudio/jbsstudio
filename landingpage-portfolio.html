@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JB Studio — Présence web qui vend</title>
+  <style>
+    /* ─── RESET & VARIABLES ─────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #1A2535;
+      --gold: #F39C12;
+      --gold-light: #FFB830;
+      --off-white: #F8F9FA;
+      --muted: #8A96A8;
+      --white: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --radius: 16px;
+      --radius-sm: 8px;
+      --transition: 0.3s ease;
+      --shadow: 0 8px 32px rgba(26, 37, 53, 0.12);
+      --shadow-gold: 0 4px 24px rgba(243, 156, 18, 0.25);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--off-white);
+      color: var(--navy);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ─── TYPOGRAPHY ────────────────────────────────────── */
+    h1,
+    h2,
+    h3,
+    .display {
+      font-family: 'Syne', sans-serif;
+      line-height: 1.15;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 800;
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .accent {
+      color: var(--gold);
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(243, 156, 18, 0.12);
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+
+    /* ─── LAYOUT UTILS ──────────────────────────────────── */
+    .container {
+      width: min(100%, 680px);
+      margin-inline: auto;
+      padding-inline: 20px;
+    }
+
+    .section {
+      padding-block: 64px;
+    }
+
+    .section--dark {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    /* ─── NAVIGATION ────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(248, 249, 250, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(26, 37, 53, 0.08);
+      height: 60px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav__inner {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-inline: 20px;
+    }
+
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav__logo img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+    }
+
+    .nav__logo-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--navy);
+    }
+
+    .nav__cta {
+      background: var(--navy);
+      color: var(--white);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .nav__cta:hover {
+      background: var(--gold);
+      color: var(--navy);
+      transform: translateY(-1px);
+    }
+
+    /* ─── HERO ──────────────────────────────────────────── */
+    .hero {
+      padding-top: 100px;
+      padding-bottom: 64px;
+      text-align: center;
+    }
+
+
+
+
+
+
+
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(243, 156, 18, 0.1);
+      border: 1px solid rgba(243, 156, 18, 0.3);
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 24px;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .hero__title {
+      margin-bottom: 16px;
+      animation: fadeDown 0.6s 0.1s ease both;
+    }
+
+    .hero__sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 32px;
+      animation: fadeDown 0.6s 0.2s ease both;
+    }
+
+    .hero__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      animation: fadeDown 0.6s 0.3s ease both;
+    }
+
+    /* ─── BUTTONS ───────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 14px 28px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn--primary {
+      background: var(--gold);
+      color: var(--navy);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .btn--primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(243, 156, 18, 0.4);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--navy);
+      border: 2px solid var(--navy);
+    }
+
+    .btn--outline:hover {
+      background: var(--navy);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .btn--outline-light {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .btn--outline-light:hover {
+      background: var(--white);
+      color: var(--navy);
+      transform: translateY(-2px);
+    }
+
+    /* ─── PAIN SECTION ──────────────────────────────────── */
+    .pain-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .pain-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+
+      border: 1px solid #F39C12;
+      box-shadow: 0 2px 16px rgba(26, 37, 53, 0.06);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .pain-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .pain-card__icon {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+
+    .pain-card__title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--navy);
+    }
+
+    .pain-card__body {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ─── CONSEQUENCE ───────────────────────────────────── */
+    .consequence-box {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      border-left: 4px solid var(--gold);
+      box-shadow: var(--shadow);
+    }
+
+    .consequence-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .consequence-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #4A5568;
+    }
+
+    .consequence-list li::before {
+      content: '→';
+      color: var(--gold);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .pivot-statement {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+
+    .pivot-statement span {
+      color: var(--gold);
+    }
+
+    /* ─── SERVICES ──────────────────────────────────────── */
+    .service-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      border: 1px solid rgba(26, 37, 53, 0.07);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 20px;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(26, 37, 53, 0.14);
+    }
+
+    .service-card__num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .service-card__badge {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-bottom: 4px;
+    }
+
+    .service-card__title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .service-card__desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .service-card__features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .service-card__features li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      color: #F39C12;
+    }
+
+    .service-card__features li::before {
+      content: '✓';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      background: rgba(243, 156, 18, 0.15);
+      color: var(--gold);
+      border-radius: 50%;
+      font-size: 0.65rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .service-card__result {
+      background: var(--off-white);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .service-card__audience {
+      border-top: 1px solid rgba(26, 37, 53, 0.07);
+      padding-top: 16px;
+    }
+
+    .audience-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .audience-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .audience-pill {
+      background: var(--navy);
+      color: var(--white);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 50px;
+    }
+
+    /* ─── TRANSFORMATION ────────────────────────────────── */
+    .transformation {
+      background: linear-gradient(135deg, var(--navy) 0%, #253550 100%);
+    }
+
+    .transform-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .transform-col {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+    }
+
+    .transform-col__label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.45);
+      margin-bottom: 16px;
+    }
+
+    .transform-col__list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .transform-col__list li {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .transform-col--after .transform-col__list li {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .transform-col--after {
+      background: rgba(243, 156, 18, 0.15);
+      border: 1px solid rgba(243, 156, 18, 0.3);
+    }
+
+    .transform-arrow {
+      color: var(--gold);
+      font-size: 1.6rem;
+      text-align: center;
+    }
+
+    /* ─── PROOF / TESTIMONIAL ───────────────────────────── */
+    .testimonial-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--gold);
+    }
+
+    .testimonial-card__quote {
+      font-size: 0.95rem;
+      color: #4A5568;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .testimonial-card__author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .testimonial-card__avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--navy);
+      background-image: url(prev.png);
+      background-size: cover;
+      background-position: center;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .testimonial-card__name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--navy);
+    }
+
+    .testimonial-card__role {
+      font-size: 0.8rem;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .testimonial-card__result {
+      margin-top: 16px;
+      background: linear-gradient(90deg, rgba(243, 156, 18, 0.1) 0%, transparent 100%);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    /* ─── MÉTHODE / PROCESS ─────────────────────────────── */
+    .process-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .process-step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+      align-items: flex-start;
+      padding-bottom: 28px;
+      position: relative;
+    }
+
+    .process-step::after {
+      content: '';
+      position: absolute;
+      left: 23px;
+      top: 48px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    .process-step:last-child::after {
+      display: none;
+    }
+
+    .process-step__num {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .process-step__content {
+      padding-top: 10px;
+      transform: translate(0px, -27px);
+    }
+
+    .process-step__title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--navy);
+      margin-bottom: 4px;
+
+    }
+
+    .process-step__sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-weight: 600;
+    }
+
+    /* ─── FAQ / OBJECTIONS ──────────────────────────────── */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    details.faq-item {
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(26, 37, 53, 0.08);
+      overflow: hidden;
+    }
+
+    details.faq-item summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--navy);
+      user-select: none;
+      transition: background var(--transition);
+    }
+
+    details.faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.faq-item summary::after {
+      content: '+';
+      color: var(--gold);
+      font-size: 1.3rem;
+      font-weight: 300;
+      transition: transform var(--transition);
+      flex-shrink: 0;
+    }
+
+    details.faq-item[open] summary::after {
+      transform: rotate(45deg);
+    }
+
+    details.faq-item[open] summary {
+      background: rgba(243, 156, 18, 0.04);
+    }
+
+    .faq-item__body {
+      padding: 0 20px 16px;
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ─── FINAL CTA ─────────────────────────────────────── */
+    .cta-block {
+      background: var(--navy);
+      border-radius: var(--radius);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-block::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top right, rgba(243, 156, 18, 0.18) 0%, transparent 65%);
+    }
+
+    .cta-block>* {
+      position: relative;
+    }
+
+    .cta-block__title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      margin-bottom: 12px;
+    }
+
+    .cta-block__sub {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 28px;
+    }
+
+    .cta-services {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+      margin-bottom: 28px;
+    }
+
+    .cta-services li {
+      list-style: none;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .urgency-badge {
+      background: rgba(243, 156, 18, 0.15);
+      border: 1px solid rgba(243, 156, 18, 0.4);
+      color: var(--gold-light);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 50px;
+      display: inline-block;
+      margin-top: 16px;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────── */
+    .footer {
+      padding: 24px 20px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(26, 37, 53, 0.08);
+    }
+
+    /* ─── DIVIDER ───────────────────────────────────────── */
+    .divider {
+      width: 48px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+
+    /* ─── SECTION HEADER ────────────────────────────────── */
+    .section-header {
+      margin-bottom: 32px;
+    }
+
+    .section-header h2 {
+      margin-bottom: 8px;
+    }
+
+    .section-header p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .section-header--center {
+      text-align: center;
+    }
+
+    .section-header--center .divider {
+      margin-inline: auto;
+    }
+
+    /* ─── ANIMATIONS ────────────────────────────────────── */
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* staggered children */
+    .stagger>* {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    .stagger.visible>*:nth-child(1) {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0s;
+    }
+
+    .stagger.visible>*:nth-child(2) {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0.1s;
+    }
+
+    .stagger.visible>*:nth-child(3) {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0.2s;
+    }
+
+    .stagger.visible>*:nth-child(4) {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0.3s;
+    }
+
+    .stagger.visible>*:nth-child(5) {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0.4s;
+    }
+
+    /* ─── UTILITY ───────────────────────────────────────── */
+    .mt-4 {
+      margin-top: 16px;
+    }
+
+    .mt-8 {
+      margin-top: 32px;
+    }
+
+    .gap-4 {
+      gap: 16px;
+    }
+
+    .gap-3 {
+      gap: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════
+       NAVIGATION
+  ════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">
+        <img src="jbstudio.png" alt="JB Studio logo">
+        <span class="nav__logo-text">JB Studio</span>
+      </a>
+      <a href="#contact" class="btn nav__cta">Nous contacter</a>
+    </div>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════
+       HERO
+  ════════════════════════════════════ -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero__eyebrow">🚀 Agence Web & Marketing</div>
+      <h1 class="hero__title">
+        Transformer votre présence en ligne pour avoir
+        <span class="accent"> plus de vendre</span>
+      </h1>
+      <p class="hero__sub">
+        Grace a la creation des Sites web professionnels et des systèmes marketing efficaces —
+        conçus pour developper votre activité.
+      </p>
+      <div class="hero__actions">
+        <a href="#contact" class="btn btn--primary">💬 Écrire sur WhatsApp</a>
+        <a href="#services" class="btn btn--outline">Voir nos services</a>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════════════════════
+       VOS PROBLÈMES
+  ════════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="tag">Situation actuelle</div>
+        <h2>Vos problèmes</h2>
+        <p>Reconnaissez-vous votre business ici ?</p>
+      </div>
+
+      <div class="pain-grid stagger">
+        <div class="pain-card">
+          <div class="pain-card__icon">📩</div>
+          <div class="pain-card__title">Messages sans résultats</div>
+          <p class="pain-card__body">Des dizaines de messages par jour, mais les prospects n'achètent jamais vraiment.
+          </p>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-card__icon">🤷</div>
+          <div class="pain-card__title">Présentation floue</div>
+          <p class="pain-card__body">Vos offres ne convainquent pas — les gens ne comprennent pas ce que vous vendez.
+          </p>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-card__icon">📉</div>
+          <div class="pain-card__title">Clients perdus en silence</div>
+          <p class="pain-card__body">Vous perdez des clients sans même vous en rendre compte, invisiblement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════
+       LES CONSÉQUENCES
+  ════════════════════════════════════ -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="tag">Agitation</div>
+        <h2>Les conséquences</h2>
+      </div>
+
+      <div class="consequence-box reveal">
+        <p style="font-weight:600; margin-bottom: 4px;">Sans une bonne structure en ligne :</p>
+        <ul class="consequence-list">
+          <li>Vous perdez des clients invisiblement</li>
+          <li>Vous fatiguez à répéter les mêmes choses</li>
+          <li>Vous perdez du temps, de l'énergie et de l'argent</li>
+          <li>Vos concurrents récupèrent vos clients</li>
+        </ul>
+      </div>
+
+      <div class="pivot-statement reveal mt-4">
+        Le problème n'est pas <span>ce que vous vendez</span>.<br>
+        Le problème, c'est la <span>manière dont c'est présenté</span>.
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════
+       SERVICES
+  ════════════════════════════════════ -->
+  <section class="section section--dark" id="services">
+    <div class="container">
+      <div class="section-header section-header--center reveal">
+        <div class="divider"></div>
+        <h2 style="color:var(--white);">Nos services</h2>
+        <p style="color:rgba(255,255,255,0.55);">Tout ce dont vous avez besoin pour vendre en ligne</p>
+      </div>
+
+      <!-- Service 01 -->
+      <div class="service-card reveal" style="background:#253550; color:var(--white); margin-bottom:20px;">
+        <div>
+          <div class="service-card__num">01</div>
+          <span class="service-card__badge">Landing Page</span>
+          <div class="service-card__title" style="color:var(--white);">Vendre en ligne</div>
+          <p class="service-card__desc">Une page web conçue pour une seule chose — convaincre et convertir.</p>
+        </div>
+        <ul class="service-card__features">
+          <li>Présentation claire de ce que vous vendez</li>
+          <li>Message convaincant (copywriting pro)</li>
+          <li>Appel à l'action direct et efficace</li>
+        </ul>
+        <div class="service-card__result">
+          🎯 Résultat : moins d'hésitation, plus de ventes, plus de clients
+        </div>
+        <div class="service-card__audience">
+          <div class="audience-label">Pour qui ?</div>
+          <div class="audience-pills">
+            <span class="audience-pill">Vendeurs en ligne</span>
+            <span class="audience-pill">Formateurs</span>
+            <span class="audience-pill">Entreprises</span>
+            <span class="audience-pill">Autres...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 02 -->
+      <div class="service-card reveal" style="background:#253550; color:var(--white); margin-bottom:20px;  ">
+        <div>
+          <div class="service-card__num">02</div>
+          <span class="service-card__badge">Portfolio</span>
+          <div class="service-card__title" style="color:var(--white);">Convaincre & crédibiliser</div>
+          <p class="service-card__desc">Montrez votre travail a travers une page web comme un professionnel reconnu.</p>
+        </div>
+        <ul class="service-card__features">
+          <li>Projets organisés visuellement</li>
+          <li>Présentation claire de vos services</li>
+          <li>Image forte et crédible</li>
+        </ul>
+        <div class="service-card__result">
+          🎯 Résultat : plus de clients, plus de respect, plus d'opportunités
+        </div>
+        <div class="service-card__audience">
+          <div class="audience-label">Pour qui ?</div>
+          <div class="audience-pills">
+            <span class="audience-pill">Freelances</span>
+            <span class="audience-pill">Designers</span>
+            <span class="audience-pill">Photographes</span>
+            <span class="audience-pill">Autres...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 03 -->
+      <div class="service-card reveal" style="background:#253550; color:var(--white); ">
+        <div>
+          <div>
+            <div class="service-card__num">03</div>
+            <span class="service-card__badge">Marketing</span>
+            <div class="service-card__title" style="color:var(--white);">Attirer & fidéliser</div>
+            <p class="service-card__desc">Développez votre visibilité grâce à des stratégies marketing efficaces.</p>
+          </div>
+          <ul class="service-card__features">
+            <li>Contenus publicitaires ciblés</li>
+            <li>Visuels professionnels et impactants</li>
+            <li>Stratégies de communication claires</li>
+          </ul><br>
+
+          <div class="service-card__result">
+            🎯 Résultat : plus de visibilité, d'engagement et de clients
+          </div>
+
+          <div class="service-card__audience">
+            <div class="audience-label">Pour qui ?</div>
+            <div class="audience-pills">
+              <span class="audience-pill">Entreprises</span>
+              <span class="audience-pill">Formateurs</span>
+              <span class="audience-pill">Commerces locaux</span>
+              <span class="audience-pill">Autres...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════
+       TRANSFORMATION
+  ════════════════════════════════════ -->
+  <section class="section transformation">
+    <div class="container">
+      <div class="section-header section-header--center reveal">
+        <div class="divider" style="margin:0 auto 20px;"></div>
+        <h2 style="color:var(--white);">La transformation</h2>
+      </div>
+
+      <div class="transform-grid reveal">
+        <div class="transform-col">
+          <div class="transform-col__label">Avant</div>
+          <ul class="transform-col__list">
+            <li>😩 Désorganisé</li>
+            <li>😤 Fatigué</li>
+            <li>👻 Ignoré</li>
+          </ul>
+        </div>
+        <div class="transform-arrow">→</div>
+        <div class="transform-col transform-col--after">
+          <div class="transform-col__label">Après</div>
+          <ul class="transform-col__list">
+            <li>✅ Structuré</li>
+            <li>💼 Crédible</li>
+            <li>💰 Rentable</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="reveal" style="text-align:center; color:rgba(255,255,255,0.7); font-size:0.9rem; margin-top:24px;">
+        Avec nos services : vos clients <strong style="color:var(--white);">comprennent</strong>, <strong
+          style="color:var(--white);">font confiance</strong> et <strong style="color:var(--white);">passent à
+          l'action</strong>.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════
+       PREUVE / TÉMOIGNAGE
+  ════════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="tag">Preuve sociale</div>
+        <h2>Ce que disent nos clients</h2>
+      </div>
+
+      <div class="testimonial-card reveal">
+        <p class="testimonial-card__quote">
+
+
+          une equipe proffesionelle, creatif et sutout a l'ecoute. grace a leur travail notre entreprise a gagner en
+          visibiliter et notre image est devenu baucoup plus moderne. le resultat a depasse tout nos attentes. Je
+          recommande cette agence a 100 %.
+
+        </p>
+        <div class="testimonial-card__author">
+          <div class="testimonial-card__avatar"></div>
+          <div>
+            <div class="testimonial-card__name">Daniel JEAN</div>
+            <div class="testimonial-card__role">PDG d'ATTAN</div>
+          </div>
+        </div>
+        <div class="testimonial-card__result">
+          📈 Résultat : Plus de crédibilité, plus de vents, plus de clients.
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════
+       MÉTHODE
+  ════════════════════════════════════ -->
+  <section class="section" style="background:var(--navy); padding-top:56px; padding-bottom:56px;">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="tag" style="background:rgba(243,156,18,0.2); color:var(--gold);">Notre méthode</div>
+        <h2 style="color:var(--white);">Nous vous accompagnons de A à Z</h2>
+        <p style="color:rgba(255,255,255,0.5);">En quelques jours, un système prêt à générer des clients.</p>
+      </div>
+
+      <div class="process-list stagger">
+        <div class="process-step">
+          <div class="process-step__num">01</div>
+          <div class="process-step__content">
+            <div class="process-step__title">Analyse de votre activité</div>
+            <div class="process-step__sub" style="color:rgba(255,255,255,0.4);">Diagnostic complet</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="process-step__num">02</div>
+          <div class="process-step__content">
+            <div class="process-step__title">Rédaction du message</div>
+            <div class="process-step__sub" style="color:rgba(255,255,255,0.4);">Copywriting Pro</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="process-step__num">03</div>
+          <div class="process-step__content">
+            <div class="process-step__title">Design professionnel</div>
+            <div class="process-step__sub" style="color:rgba(255,255,255,0.4);">Layout Web</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="process-step__num">04</div>
+          <div class="process-step__content">
+            <div class="process-step__title">Création du site</div>
+            <div class="process-step__sub" style="color:rgba(255,255,255,0.4);">Développement Web</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="process-step__num">05</div>
+          <div class="process-step__content">
+            <div class="process-step__title">Mise en ligne</div>
+            <div class="process-step__sub" style="color:rgba(255,255,255,0.4);">Hébergement inclus</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════
+       OBJECTIONS / FAQ
+  ════════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="tag">FAQ</div>
+        <h2>Vos questions</h2>
+      </div>
+
+      <div class="faq-list stagger">
+        <details class="faq-item">
+          <summary>Est-ce que ça va vraiment marcher ?</summary>
+          <p class="faq-item__body">
+            Oui — parce que tout est conçu pour guider votre client vers l'action.
+            Chaque élément (texte, design, structure) est pensé pour convertir.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Est-ce que j'en ai vraiment besoin ?</summary>
+          <p class="faq-item__body">
+            Si vous voulez plus de visibilité, plus de ventes et booster votre business,
+            oui. Sans outil de conversion, vous laissez de l'argent sur la table chaque jour.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>C'est cher ?</summary>
+          <p class="faq-item__body">
+            Perdre des ventes tous les jours coûte bien plus cher.
+            Contactez-nous — nous analysons votre situation gratuitement.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════
+       FINAL CTA
+  ════════════════════════════════════ -->
+  <section class="section" id="contact" style="padding-top:0;">
+    <div class="container">
+      <div class="cta-block reveal">
+        <div class="cta-block__title">Vous voulez plus de clients ?</div>
+        <p class="cta-block__sub">Nous créons des systèmes qui vendent pour vous :</p>
+        <ul class="cta-services">
+          <li>📣 Stratégies marketing — pour attirer</li>
+          <li>🖼️ Sites vitrines — pour la crédibilité</li>
+          <li>📁 Portfolios — pour convaincre</li>
+          <li>🏠 Landing pages — pour vendre</li>
+
+
+
+        </ul>
+        <a
+href="https://wa.me/50935
+588305?text=Bonjour%2C
+%20je%20suis%20int%C3
+%A9ress%C3%A9%20par
+%20vos%20services%20e
+t%20je%20vous%20conta
+cte%20pour%20discuter%
+20d%E2%80%99un%20pr
+ojet" target="_blank" class="btn btn--primary" style="font-size:1rem; padding:16px 36px;">
+          💬 Écrire sur WhatsApp
+        </a>
+        <p style="font-size:0.8rem; color:rgba(255,255,255,0.45); margin-top:12px;">
+          On analyse votre situation gratuitement
+        </p>
+        <div class="urgency-badge">⚡ Nous travaillons avec un nombre limité de clients pour garantir des résultats réels
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════
+       FOOTER
+  ════════════════════════════════════ -->
+  <footer class="footer">
+    <p>© 2026 — Barthez Miguel Jean-Baptiste · JB Studio. Tous droits réservés.</p>
+  </footer>
+
+
+  <!-- ═══════════════════════════════════
+       JS — Scroll reveal
+  ════════════════════════════════════ -->
+  <script>
+    const revealEls = document.querySelectorAll('.reveal, .stagger');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+
+</html>
